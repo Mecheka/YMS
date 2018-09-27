@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //REQUEST CODE
     private static final int REQUEST_SCANBARCODE = 701;
+    private static final int REQUEST_SETTING = 702;
 
     //SharedPreferences file
     private static final String SPF_URL = "vidsurl";
@@ -39,12 +40,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         initInstance();
-        if (firtTime) {
 
-            firtTime = false;
+        SharedPreferences urlSPF = getSharedPreferences(SettingActicity.SPF_URL, Context.MODE_PRIVATE);
+        url = urlSPF.getString(SettingActicity.URL, "");
+        if (url.isEmpty()) {
+
+            Intent settingIntent = new Intent(MainActivity.this, SettingActicity.class);
+            startActivityForResult(settingIntent, REQUEST_SETTING);
+        }else {
             Intent scanIntent = new Intent(MainActivity.this, ScanBarActivity.class);
             startActivityForResult(scanIntent, REQUEST_SCANBARCODE);
-
         }
     }
 
@@ -76,6 +81,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         String urlWithData = urlPreferences.getString(URL, "") + data.getStringExtra("barcode");
                         webView.loadUrl(urlWithData);
                     }
+                }
+                break;
+            case REQUEST_SETTING:
+                if (resultCode == RESULT_OK) {
+                    Intent scanIntent = new Intent(this, ScanBarActivity.class);
+                    startActivityForResult(scanIntent, REQUEST_SCANBARCODE);
                 }
                 break;
         }

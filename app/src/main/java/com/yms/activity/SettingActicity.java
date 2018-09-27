@@ -16,8 +16,8 @@ import com.yms.manager.URLManager;
 public class SettingActicity extends AppCompatActivity implements View.OnClickListener {
 
     //SharedPreferences file
-    private static final String SPF_URL = "vidsurl";
-    private static final String URL = "url";
+    public static final String SPF_URL = "vidsurl";
+    public static final String URL = "url";
 
     private EditText editUrl;
     private Button btnSave;
@@ -78,6 +78,7 @@ public class SettingActicity extends AppCompatActivity implements View.OnClickLi
                         SharedPreferences urlPreferences = getSharedPreferences(SPF_URL, Context.MODE_PRIVATE);
                         urlPreferences.edit().putString(URL, url).apply();
                         URLManager.getInInstace().setUrl(url);
+                        setResult(RESULT_OK);
                         finish();
                     }
                 })
